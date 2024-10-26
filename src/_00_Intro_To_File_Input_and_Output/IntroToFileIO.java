@@ -46,7 +46,7 @@ public class IntroToFileIO {
 
 		//Write to a file
 		try {
-			FileWriter fw = new FileWriter("src/_00_Intro_To_File_Input_and_Output/test2.txt");
+			FileWriter fw = new FileWriter("src/_00_Intro_To_File_Input_and_Output/test3.txt");
 			
 			/*
 			NOTE: To append to a file that already exists, add true as a second parameter when calling the
@@ -55,9 +55,10 @@ public class IntroToFileIO {
 			*/
 			
 			fw.write("\nThis is me writing a message");
-				
+				fw.append("eyyyyyuuuuuuuuuuy gabagool");
 			fw.close();
 		} catch (IOException e) {
+			System.out.println("eror");
 			e.printStackTrace();
 		}
 		
