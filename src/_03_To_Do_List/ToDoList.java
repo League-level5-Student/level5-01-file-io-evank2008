@@ -2,13 +2,19 @@ package _03_To_Do_List;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-//fix line 97
+
 public class ToDoList implements ActionListener {
 	ArrayList<String> list = new ArrayList<String>();
 	ArrayList<JButton> blist = new ArrayList<JButton>();
@@ -20,6 +26,9 @@ public class ToDoList implements ActionListener {
 	JButton remove = new JButton("Remove Task");
 	JButton save = new JButton("Save List");
 	JButton load = new JButton("Load List");
+	
+	JFrame fram;
+	JPanel pan;
 	
 	public ToDoList() {
 		add.addActionListener(this);
@@ -36,6 +45,7 @@ public class ToDoList implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.pack();
+		load("src/_03_To_Do_List/data.txt");
 	}
 	/*
 	 * Create a program with five buttons, add task, view tasks, remove task, save list, and load list. 
@@ -67,40 +77,98 @@ public class ToDoList implements ActionListener {
 		if(so==add) {
 			list.add(JOptionPane.showInputDialog("Enter task"));
 		} else if(so==view) {
-			System.out.println("To do:");
-			for(String s:list) {
-				System.out.println("-"+s);
-			}
-		}else if(so==remove) {
 			if(list.size()==0) {
-				System.out.println("No tasks in list!");
+				JOptionPane.showMessageDialog(null,"All caught up!");
+			} else {
+			String msg = "To do:";
+			
+			for(String s:list) {
+				msg+="\n-"+s;
+			}
+			JOptionPane.showMessageDialog(null,msg);
+		}}
+		else if(so==remove) {
+			if(list.size()==0) {
+				JOptionPane.showMessageDialog(null,"No tasks in list!");
 				return;
 			}
-			JFrame fram = new JFrame("Remove a Task");
-			JPanel pan = new JPanel();
+			fram = new JFrame("Remove a Task");
+			pan = new JPanel();
 			fram.add(pan);
 			fram.setVisible(true);
-			fram.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			int i = 0;
 			for(String s: list) {
-				blist.add(new JButton((i+1)+": "+s));
+				blist.add(new JButton(s));
 				blist.get(i).addActionListener(this);
 				pan.add(blist.get(i));
 				i++;
 			}
 			fram.pack();
 		}else if(so==save) {
-			
+			save();
 		}else if(so==load) {
+			JFileChooser jfc = new JFileChooser();
+			int returnVal = jfc.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				load(jfc.getSelectedFile().getAbsolutePath());
+			}
 			
 		}else {
-			//replace this with a for int i thingy or iterator
-			for(JButton j:blist) {
-				if(so==j) {
-					blist.remove((int)j.getText().charAt(0)-(50));
+			for(int i = 0; i<blist.size();i++) {
+				if(so==blist.get(i)) {
+					blist.remove(i);
+					list.remove(i);
+					fram.dispose();
+					return;
 				}
 			}
 		}
 
 	}
+	void save() {
+		boolean good = true;
+		try {
+			FileWriter fw = new FileWriter("src/_03_To_Do_List/data.txt");
+			for(String s: list) {
+				fw.append(s);
+				fw.append("\n");
+			}
+			fw.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			good=false;
+			e.printStackTrace();
+		}
+		if(good) {
+JOptionPane.showMessageDialog(null, "Data saved successfully!");
+		} else {
+			JOptionPane.showMessageDialog(null, "error or smthn idk");
+		}
+	}
+	void load(String path) {
+		list=new ArrayList<String>();
+		try {
+			BufferedReader fr = new BufferedReader(new FileReader(path));
+			try {
+				boolean stop=false;
+				while(!stop) {
+					String s =fr.readLine();
+					if(s==null) {
+						stop=true;
+					} else {
+						list.add(s);
+					}
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+JOptionPane.showMessageDialog(null, "File Loaded!");
+	}
 }
+
+//Copyright LOLOLOL

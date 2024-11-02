@@ -9,3 +9,5 @@ public class LeagueToken {
 		hacker.hack();
 	}
 }
+
+//Copyright LOLOLOL

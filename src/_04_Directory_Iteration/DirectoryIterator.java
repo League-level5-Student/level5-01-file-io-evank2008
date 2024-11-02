@@ -1,6 +1,9 @@
 package _04_Directory_Iteration;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 
@@ -10,16 +13,35 @@ public class DirectoryIterator {
 		 * The following is an example of how to list all of the files in a directory.
 		 * Once the program is running, the directory is chosen using the JFileChooser.
 		 */
+		
 		JFileChooser jfc = new JFileChooser();
-		jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int returnVal = jfc.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File directory = jfc.getSelectedFile();
 			File[] files = directory.listFiles();
+			ArrayList<File[]> allFiles = new ArrayList<File[]>();
 			if(files != null) {
 				for(File f : files) {
+					allFiles.add(f.listFiles());
 				  System.out.println(f.getAbsolutePath());
 				}
+			}
+			for(File[] ff:allFiles) {
+				if(ff!=null) {
+				for(File f:ff) {
+					if(f.getAbsolutePath().endsWith(".java")) {
+						try {
+							FileWriter fw = new FileWriter(f.getPath(), true);
+							fw.append("\n//Copyright LOLOLOL");
+							fw.flush();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
 			}
 		}
 		
@@ -31,3 +53,5 @@ public class DirectoryIterator {
 		 */
 	}
 }
+
+//Copyright LOLOLOL

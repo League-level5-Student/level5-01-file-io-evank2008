@@ -29,3 +29,5 @@ public class FileRecorder {
 		new FileRecorder();
 	}
 }
+
+//Copyright LOLOLOL

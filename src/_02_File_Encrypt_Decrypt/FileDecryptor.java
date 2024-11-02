@@ -63,3 +63,5 @@ public class FileDecryptor {
 		new FileDecryptor();
 	}
 }
+
+//Copyright LOLOLOL

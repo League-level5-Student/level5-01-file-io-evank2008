@@ -54,3 +54,5 @@ public class FileEncryptor {
 		new FileEncryptor();
 	}
 }
+
+//Copyright LOLOLOL
